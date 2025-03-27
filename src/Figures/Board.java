@@ -1,6 +1,5 @@
 package Figures;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Board {
@@ -8,23 +7,34 @@ public class Board {
     public static Figure[] topSide;
     public static Figure[] bottomSide;
     public static String whosMoves = "White";
+    public static Figure[] kingObjs = new Figure[2];
 
     public static void main(String[] args) {
         initializeBoard("White");
         printBoard();
-        move(board[6][4], 5, 4);
-        printBoard();
-        move(board[1][3], 2, 3);
-        printBoard();
-        move(board[7][5], 2, 0);
-        printBoard();
-        move(board[1][7], 2, 7);
-        printBoard();
-        move(board[2][0], 4, 2);
-        printBoard();
-        move(board[2][7], 3, 7);
-        printBoard();
-        move(board[7][3], 3, 7);
+//        move(board[6][4], 5, 4);
+//        printBoard();
+//        move(board[1][3], 2, 3);
+//        printBoard();
+//        move(board[7][5], 2, 0);
+//        printBoard();
+//        move(board[1][7], 2, 7);
+//        printBoard();
+//        move(board[2][0], 4, 2);
+//        printBoard();
+//        move(board[2][7], 3, 7);
+//        printBoard();
+//        move(board[7][3], 3, 7);
+//        printBoard();
+//        move(board[1][0], 2, 0);
+//        printBoard();
+//        move(board[7][6], 5, 5);
+//        printBoard();
+//        move(board[2][0], 3, 0);
+//        printBoard();
+//        move(board[7][4], 7, 7);
+//        printBoard();
+        move(board[7][4], 7, 7);
         printBoard();
 
     }
@@ -66,6 +76,8 @@ public class Board {
             Figure w7 = new Pawn("White", 6, 6);
             Figure w8 = new Pawn("White", 6, 7);
             bottomSide = new Figure[]{wR1, wN1, wB1, wQ1, wK1, wB2, wN2, wR2, w1, w2, w3, w4, w5, w6, w7, w8};
+            kingObjs[0] = wK1;
+            kingObjs[1] = bK1;
         }
         else if (Objects.equals(playersColor, "Black")) {
             Figure bR1 = new Rook("Black", 7, 0);
@@ -103,6 +115,8 @@ public class Board {
             Figure w7 = new Pawn("White", 1, 6);
             Figure w8 = new Pawn("White", 1, 7);
             topSide = new Figure[]{wR1, wN1, wB1, wQ1, wK1, wB2, wN2, wR2, w1, w2, w3, w4, w5, w6, w7, w8};
+            kingObjs[0] = wK1;
+            kingObjs[1] = bK1;
         }
         for (int i = 0; i < 16; ++i) {
             board[topSide[i].getCoordinates()[0]][topSide[i].getCoordinates()[1]] = topSide[i];
@@ -110,9 +124,11 @@ public class Board {
         }
     }
 
-    public static void changeFigurePosition(int x, int y, int newX, int newY) {
+    public static Figure changeFigurePosition(int x, int y, int newX, int newY) {
+        Figure removed = board[newX][newY];
         board[newX][newY] = board[x][y];
         board[x][y] = null;
+        return removed;
     }
 
     public static boolean move(Figure obj, int newX, int newY) {

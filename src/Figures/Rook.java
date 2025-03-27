@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Rook extends Figure{
 
     {
+        firstMove = true;
         super.figureLetter = "R";
     }
 
@@ -54,6 +55,29 @@ public class Rook extends Figure{
                     return !Objects.equals(Board.board[newX][newY].color, this.color);
                 }
             }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean move(int newX, int newY) {
+        if (checkMove(newX, newY) && Objects.equals(Board.whosMoves, this.color)) { // TODO: Need to check if this figure moves then king is unchecked
+            int tmpX = this.coordinates[0], tmpY = this.coordinates[1];
+            Figure king = this.color.equals("White") ? Board.kingObjs[0] : Board.kingObjs[1];
+            Figure removed = Board.changeFigurePosition(tmpX, tmpY, newX, newY);
+            this.coordinates[0] = newX;
+            this.coordinates[1] = newY;
+            if (checkCheck(king.coordinates[0], king.coordinates[1])) {
+                this.coordinates[0] = tmpX;
+                this.coordinates[1] = tmpY;
+                Board.changeFigurePosition(newX, newY, tmpX, tmpY);
+                Board.board[newX][newY] = removed;
+                return false;
+            }
+            changeLastMove(newX, newY);
+            firstMove = false;
+            Board.whosMoves = Objects.equals(Board.whosMoves, "White") ? "Black" : "White";
+            return true;
         }
         return false;
     }

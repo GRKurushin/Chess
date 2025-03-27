@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Pawn extends Figure{
-    private boolean firstMove;
 
     {
         firstMove = true;
@@ -64,10 +63,19 @@ public class Pawn extends Figure{
     @Override
     public boolean move(int newX, int newY) {
         if (checkMove(newX, newY) && Objects.equals(Board.whosMoves, this.color)) {
-            Board.changeFigurePosition(this.getCoordinates()[0], this.getCoordinates()[1], newX, newY);
-            changeLastMove(newX, newY);
+            int tmpX = this.coordinates[0], tmpY = this.coordinates[1];
+            Figure king = this.color.equals("White") ? Board.kingObjs[0] : Board.kingObjs[1];
+            Figure removed = Board.changeFigurePosition(tmpX, tmpY, newX, newY);
             this.coordinates[0] = newX;
             this.coordinates[1] = newY;
+            if (checkCheck(king.coordinates[0], king.coordinates[1])) {
+                this.coordinates[0] = tmpX;
+                this.coordinates[1] = tmpY;
+                Board.changeFigurePosition(newX, newY, tmpX, tmpY);
+                Board.board[newX][newY] = removed;
+                return false;
+            }
+            changeLastMove(newX, newY);
             firstMove = false;
             Board.whosMoves = Objects.equals(Board.whosMoves, "White") ? "Black" : "White";
             return true;
