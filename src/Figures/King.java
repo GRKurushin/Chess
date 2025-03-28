@@ -16,7 +16,7 @@ public class King extends Figure{
     }
 
     @Override
-    public boolean checkMove(int newX, int newY) {
+    public boolean checkMove(int newX, int newY) { // TODO: check if we can uncheck king by destroying the attacking figure
         if (super.checkMove(newX, newY)) {
             int[] coordinates = this.getCoordinates();
             if ((newX == coordinates[0] - 1 && newY == coordinates[1]) ||

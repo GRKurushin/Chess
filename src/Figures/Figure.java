@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Figure {
-    protected final String color;
+    public final String color;
     protected int[] coordinates = new int[2];
     protected final int id;
     protected static int count;
